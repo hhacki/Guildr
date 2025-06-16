@@ -9,12 +9,25 @@ module.exports = async (interaction) => {
 
     const selectedTemplate = templatesConfig.find(template => template.name === value[0])
 
+    //#region Dev Only
+    if (selectedTemplate.name === 'Fill (Dev Only)') {
+        let channelsToMax = 500 - guild.channels.cache.size
+        console.log(`Creating ${channelsToMax} channels`);
+
+        for (let i = 1; i <= channelsToMax; i++) {
+            guild.channels.create({
+                name: `filler ${i}`,
+                type: 0,
+            });
+        }
+
+        return 0
+    }
+    //#endregion
+
     const channelCount = selectedTemplate.categories.reduce((total, category) => {
         return total + 1 + (category.channels?.length || 0);
     }, 0);
-
-    console.log(channelCount);
-    
 
     if (guild.channels.cache.size > 500 - channelCount) return 1;
 
@@ -42,4 +55,4 @@ module.exports = async (interaction) => {
             });
         }
     }
-}
+};

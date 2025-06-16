@@ -120,5 +120,10 @@
                 ]
             }
         ]
+    },
+    {
+        "name": "Fill (Dev Only)",
+        "description": "Fills the server with filler channel(s)",
+        "emoji": "⚙"
     }
 ]
