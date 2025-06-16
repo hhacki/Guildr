@@ -55,7 +55,7 @@ module.exports = {
             filter: (i) => i.user.id === interaction.user.id && i.customId === interaction.id,
         });
 
-        collector.on('collect', (interaction) => {
+        collector.on('collect', async (interaction) => {
             if (!interaction.values.length) {
                 interaction.reply('Your selection is empty. Purging server. :warning:');
                 purgeServer(client, interaction);
@@ -67,9 +67,8 @@ module.exports = {
                 return;
             }
 
-            interaction.reply(`You have selected ${interaction.values.join(',')}. Building server. :white_check_mark:`);
-
-            buildServer(interaction);
+            if (await buildServer(interaction) === 1) interaction.reply('Channel number exceeds limits, couldn\'t build server. :octagonal_sign:') 
+            else interaction.reply(`You have selected ${interaction.values.join(',')}. Building server. :white_check_mark:`);
         });
     },
 };

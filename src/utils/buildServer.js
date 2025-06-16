@@ -4,6 +4,9 @@ module.exports = async (interaction) => {
     const guild = interaction.guild;
     const value = interaction.values;
 
+    // TODO: Replace hardcoded '12' with the number of channels to create.
+    if (guild.channels.cache.size > 500 - 12) return 1;
+
     if (value[0] === 'Simple') {
         const categoryInfo = await guild.channels.create({
             name: 'Info',
