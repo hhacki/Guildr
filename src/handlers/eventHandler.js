@@ -1,10 +1,10 @@
 const path = require('path');
-const getAllFiles = require('../utils/getAllFiles');
+const getAllSrcFiles = require('../utils/getAllSrcFiles');
 
 module.exports = (client) => {
-    const eventFolders = getAllFiles(path.join(__dirname, '..', 'events'), true);
+    const eventFolders = getAllSrcFiles(path.join(__dirname, '..', 'events'), true);
     for (const eventFolder of eventFolders) {
-        const eventFiles = getAllFiles(eventFolder);
+        const eventFiles = getAllSrcFiles(eventFolder);
         eventFiles.sort((a, b) => a > b);
 
         const eventName = eventFolder.replace(/\\/g, '/').split('/').pop();
