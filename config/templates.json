@@ -1,0 +1,124 @@
+[
+    {
+        "name": "Simple",
+        "description": "A minimal server template",
+        "emoji": "📑",
+        "categories": [
+            {
+                "name": "Info",
+                "channels": [
+                    {
+                        "name": "rules",
+                        "type": "text"
+                    },
+                    {
+                        "name": "announcements",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "Text channels",
+                "channels": [
+                    {
+                        "name": "general",
+                        "type": "text"
+                    },
+                    {
+                        "name": "memes",
+                        "type": "text"
+                    },
+                    {
+                        "name": "bots",
+                        "type": "text"
+                    },
+                    {
+                        "name": "nsfw",
+                        "type": "text",
+                        "nsfw": true
+                    }
+                ]
+            },
+            {
+                "name": "Voice channels",
+                "channels": [
+                    {
+                        "name": "Voice",
+                        "type": "voice"
+                    },
+                    {
+                        "name": "Duo",
+                        "type": "voice",
+                        "user_limit": 2
+                    },
+                    {
+                        "name": "Trio",
+                        "type": "voice",
+                        "user_limit": 3
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Lantern",
+        "description": "A lantern server template",
+        "emoji": "🏮",
+        "categories": [
+            {
+                "name": "°︶꒦꒷꒦° 🏮 Info 🏮 °꒦꒷꒦︶°",
+                "channels": [
+                    {
+                        "name": "╭-rules",
+                        "type": "text"
+                    },
+                    {
+                        "name": "╰-announcements",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "°︶꒦꒷꒦° 🏮 Text 🏮 °꒦꒷꒦︶°",
+                "channels": [
+                    {
+                        "name": "╭-general",
+                        "type": "text"
+                    },
+                    {
+                        "name": "┃memes",
+                        "type": "text"
+                    },
+                    {
+                        "name": "┃bots",
+                        "type": "text"
+                    },
+                    {
+                        "name": "╰-nsfw",
+                        "type": "text",
+                        "nsfw": true
+                    }
+                ]
+            },
+            {
+                "name": "°︶꒦꒷꒦° 🏮 Voice 🏮 °꒦꒷꒦︶°",
+                "channels": [
+                    {
+                        "name": "╭-Voice",
+                        "type": "voice"
+                    },
+                    {
+                        "name": "┃Duo",
+                        "type": "voice",
+                        "user_limit": 2
+                    },
+                    {
+                        "name": "╰-Trio",
+                        "type": "voice",
+                        "user_limit": 3
+                    }
+                ]
+            }
+        ]
+    }
+]
