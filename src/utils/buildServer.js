@@ -1,133 +1,45 @@
-const {} = require('discord.js');
+const { ChannelType } = require('discord.js');
+const loadConfig = require('./loadConfig.js')
+
+const templatesConfig = loadConfig('templates.json')
 
 module.exports = async (interaction) => {
     const guild = interaction.guild;
     const value = interaction.values;
 
-    // TODO: Replace hardcoded '12' with the number of channels to create.
-    if (guild.channels.cache.size > 500 - 12) return 1;
+    const selectedTemplate = templatesConfig.find(template => template.name === value[0])
 
-    if (value[0] === 'Simple') {
-        const categoryInfo = await guild.channels.create({
-            name: 'Info',
-            type: 4,
+    const channelCount = selectedTemplate.categories.reduce((total, category) => {
+        return total + 1 + (category.channels?.length || 0);
+    }, 0);
+
+    console.log(channelCount);
+    
+
+    if (guild.channels.cache.size > 500 - channelCount) return 1;
+
+    const ChannelTypeMap = {
+        text: ChannelType.GuildText,
+        voice: ChannelType.GuildVoice,
+        forum: ChannelType.GuildForum,
+        announcement: ChannelType.GuildAnnouncement,
+        stage: ChannelType.GuildStageVoice
+    };
+
+    for (const category of selectedTemplate.categories) {
+        const newCategory = await guild.channels.create({
+            name: category.name,
+            type: ChannelType.GuildCategory
         });
-        const categoryText = await guild.channels.create({
-            name: 'Text channels',
-            type: 4,
-        });
-        const categoryVoice = await guild.channels.create({
-            name: 'Voice channels',
-            type: 4,
-        });
-        guild.channels.create({
-            name: 'rules',
-            type: 0,
-            parent: categoryInfo,
-        });
-        guild.channels.create({
-            name: 'announcements',
-            type: 0,
-            parent: categoryInfo,
-        });
-        guild.channels.create({
-            name: 'general',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: 'memes',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: 'bots',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: 'nsfw',
-            type: 0,
-            parent: categoryText,
-            nsfw: true,
-        });
-        guild.channels.create({
-            name: 'Voice',
-            type: 2,
-            parent: categoryVoice,
-        });
-        guild.channels.create({
-            name: 'Duo',
-            type: 2,
-            parent: categoryVoice,
-            user_limit: 2,
-        });
-        guild.channels.create({
-            name: 'Trio',
-            type: 2,
-            parent: categoryVoice,
-            user_limit: 3,
-        });
-    } else if (value[0] === 'Lantern') {
-        const categoryInfo = await guild.channels.create({
-            name: '°︶꒦꒷꒦° 🏮 Info 🏮 °꒦꒷꒦︶°',
-            type: 4,
-        });
-        const categoryText = await guild.channels.create({
-            name: '°︶꒦꒷꒦° 🏮 Text 🏮 °꒦꒷꒦︶°',
-            type: 4,
-        });
-        const categoryVoice = await guild.channels.create({
-            name: '°︶꒦꒷꒦° 🏮 Voice 🏮 °꒦꒷꒦︶°',
-            type: 4,
-        });
-        guild.channels.create({
-            name: '╭-rules',
-            type: 0,
-            parent: categoryInfo,
-        });
-        guild.channels.create({
-            name: '╰-announcements',
-            type: 0,
-            parent: categoryInfo,
-        });
-        guild.channels.create({
-            name: '╭-general',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: '┃memes',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: '┃bots',
-            type: 0,
-            parent: categoryText,
-        });
-        guild.channels.create({
-            name: '╰-nsfw',
-            type: 0,
-            parent: categoryText,
-            nsfw: true,
-        });
-        guild.channels.create({
-            name: '╭-Voice',
-            type: 2,
-            parent: categoryVoice,
-        });
-        guild.channels.create({
-            name: '┃Duo',
-            type: 2,
-            parent: categoryVoice,
-            user_limit: 2,
-        });
-        guild.channels.create({
-            name: '╰-Trio',
-            type: 2,
-            parent: categoryVoice,
-            user_limit: 3,
-        });
+
+        for (const channel of category.channels) {
+            await guild.channels.create({
+                name: channel.name,
+                type: ChannelTypeMap[channel.type],
+                parent: newCategory,
+                nsfw: channel.nsfw || false,
+                user_limit: channel.user_limit
+            });
+        }
     }
-};
+}

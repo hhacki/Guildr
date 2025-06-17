@@ -7,6 +7,9 @@ const {
 } = require('discord.js');
 const buildServer = require('../../utils/buildServer');
 const purgeServer = require('../../utils/purgeServer');
+const loadConfig = require('../../utils/loadConfig')
+
+const templatesConfig = loadConfig('templates.json')
 
 module.exports = {
     name: 'build',
@@ -14,20 +17,18 @@ module.exports = {
     permissionsRequired: [PermissionFlagsBits.Administrator],
     deleted: false,
     callback: async (client, interaction) => {
-        const templates = [
-            {
-                label: 'Simple',
-                description: 'A minimal server template',
-                value: 'Simple',
-                emoji: '📑',
-            },
-            {
-                label: 'Lantern',
-                description: 'A lantern server template',
-                value: 'Lantern',
-                emoji: '🏮',
-            },
-        ];
+        const templates = [];
+
+        for (const template of templatesConfig) {
+            const newTemplate = {
+                label: template.name,
+                description: template.description,
+                value: template.name,
+                emoji: template.emoji
+            }
+
+            templates.push(newTemplate)
+        }
 
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId(interaction.id)
@@ -67,8 +68,9 @@ module.exports = {
                 return;
             }
 
-            if (await buildServer(interaction) === 1) interaction.reply('Channel number exceeds limits, couldn\'t build server. :octagonal_sign:') 
-            else interaction.reply(`You have selected ${interaction.values.join(',')}. Building server. :white_check_mark:`);
+            await interaction.deferReply();
+            if (await buildServer(interaction) === 1) interaction.editReply('Channel number exceeds limits, couldn\'t build server. :octagonal_sign:')
+            else interaction.editReply(`You have selected ${interaction.values.join(',')}. Server built. :white_check_mark:`);
         });
     },
 };
