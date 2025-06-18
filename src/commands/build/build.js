@@ -57,20 +57,21 @@ module.exports = {
         });
 
         collector.on('collect', async (interaction) => {
+            await interaction.deferReply();
+
             if (!interaction.values.length) {
-                interaction.reply('Your selection is empty. Purging server. :warning:');
                 purgeServer(client, interaction);
+                interaction.editReply('Your selection is empty. The server has been purged. :warning:');
                 return;
             }
 
             if (interaction.values.length > 1) {
-                interaction.reply("You can't select more than one template at once. :octagonal_sign:");
+                interaction.editReply("You can't select more than one template at once. :octagonal_sign:");
                 return;
             }
 
-            await interaction.deferReply();
             if (await buildServer(interaction) === 1) interaction.editReply('Channel number exceeds limits, couldn\'t build server. :octagonal_sign:')
-            else interaction.editReply(`You have selected ${interaction.values.join(',')}. Server built. :white_check_mark:`);
+            else interaction.editReply(`You selected ${interaction.values.join(',')}. Server built. :white_check_mark:`);
         });
     },
 };

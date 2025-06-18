@@ -13,9 +13,6 @@ module.exports = async (interaction) => {
         return total + 1 + (category.channels?.length || 0);
     }, 0);
 
-    console.log(channelCount);
-    
-
     if (guild.channels.cache.size > 500 - channelCount) return 1;
 
     const ChannelTypeMap = {

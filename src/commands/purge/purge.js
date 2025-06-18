@@ -7,7 +7,8 @@ module.exports = {
     permissionsRequired: [PermissionFlagsBits.Administrator],
     deleted: false,
     callback: async (client, interaction) => {
+        await interaction.deferReply();
         purgeServer(client, interaction);
-        interaction.reply('Server purged successfully. :white_check_mark:');
+        interaction.editReply('Server purged successfully. :white_check_mark:');
     },
 };
